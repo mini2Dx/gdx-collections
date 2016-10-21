@@ -1,0 +1,159 @@
+import org.apache.tools.ant.filters.*
+
+buildscript {
+    repositories {
+    	mavenLocal()
+        mavenCentral()
+        maven { url 'https://github.com/steffenschaefer/gwt-gradle-plugin/raw/maven-repo/' }
+        jcenter()
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+    dependencies {
+		classpath 'io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3'
+    }
+}
+
+if(project.hasProperty('ossrhUser') && project.hasProperty("release")) {
+	apply plugin: "io.codearte.nexus-staging"
+
+	nexusStaging {
+		packageGroup = 'org.mini2Dx'
+		username = ossrhUser
+		password = ossrhPassword
+	}
+}
+
+apply plugin: "java"
+apply plugin: "signing"
+apply plugin: "maven"
+	
+group = 'org.mini2Dx'
+	
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+	
+dependencies {}
+
+task cleanSrcDir(type: Delete) {
+	delete 'src/main/java/com'
+}
+clean.dependsOn cleanSrcDir
+
+File libGdxDirectory = file("libgdx");
+
+if(libGdxDirectory.exists()) {
+	task checkoutLibGdxMaster(type: Exec) {
+		workingDir './libgdx'
+		commandLine 'git', 'checkout', 'master'
+	}
+	
+	task pullLatestLibGdxMaster(type: Exec, dependsOn: checkoutLibGdxMaster) {
+		workingDir './libgdx'
+		commandLine 'git', 'pull', 'origin', 'master'
+	}
+
+	task fetchLatestLibGdxTags(type: Exec, dependsOn: pullLatestLibGdxMaster) {
+		workingDir './libgdx'
+		commandLine 'git', 'fetch', '--tags', 'origin', 'master'
+	}
+} else {
+	task fetchLatestLibGdxTags(type: Exec) {
+		commandLine 'git', 'clone', '--progress', 'https://github.com/libgdx/libgdx.git', 'libgdx'
+	}
+}
+
+task checkoutLibGdxTag(type: Exec, dependsOn: fetchLatestLibGdxTags) {
+	workingDir './libgdx'
+	commandLine 'git', 'checkout', "$libgdxVersion"
+}
+
+task copyLicenseFiles(type: Copy, dependsOn: checkoutLibGdxTag) {
+	from('libgdx') {
+		include 'LICENSE'
+	}
+	into './'
+}
+
+task copyRequiredMathClasses(type: Copy, dependsOn: copyLicenseFiles) {
+	from('libgdx/gdx/src/com/badlogic/gdx/math') {
+		include 'MathUtils.java'
+		include 'RandomXS128.java'
+		filter { String line ->
+        	line.contains('com.badlogic.gdx.math') ? line.replace('com.badlogic.gdx.math', 'com.badlogic.gdx.utils.compat') : (
+        		line.contains('com.badlogic.gdx.utils.reflect') ? line.replace('com.badlogic.gdx.utils.reflect', 'com.badlogic.gdx.utils.compat') : line
+        	)
+    	}
+	}
+	into 'src/main/java/com/badlogic/gdx/utils/compat'
+}
+
+task copyRequiredReflectClasses(type: Copy, dependsOn: copyRequiredMathClasses) {
+	from('libgdx/gdx/src/com/badlogic/gdx/utils/reflect') {
+		include '*.java'
+		filter { String line ->
+        	line.contains('com.badlogic.gdx.math') ? line.replace('com.badlogic.gdx.math', 'com.badlogic.gdx.utils.compat') : (
+        		line.contains('com.badlogic.gdx.utils.reflect') ? line.replace('com.badlogic.gdx.utils.reflect', 'com.badlogic.gdx.utils.compat') : line
+        	)
+    	}
+	}
+	into 'src/main/java/com/badlogic/gdx/utils/compat'
+}
+
+task copyCollectionClasses(type: Copy, dependsOn: copyRequiredReflectClasses) {
+	from('libgdx/gdx/src/com/badlogic/gdx/utils') {
+		include 'Array.java'
+		include 'ArrayMap.java'
+		include 'AtomicQueue.java'
+		include 'Bits.java'
+		include 'BooleanArray.java'
+		include 'ByteArray.java'
+		include 'CharArray.java'
+		include 'ComparableTimSort.java'
+		include 'DelayedRemovalArray.java'
+		include 'Disposable.java'
+		include 'FloatArray.java'
+		include 'FlushablePool.java'
+		include 'GdxRuntimeException.java'
+		include 'IdentityMap.java'
+		include 'IntArray.java'
+		include 'IntFloatMap.java'
+		include 'IntIntMap.java'
+		include 'IntMap.java'
+		include 'IntSet.java'
+		include 'LongArray.java'
+		include 'LongMap.java'
+		include 'NumberUtils.java'
+		include 'ObjectFloatMap.java'
+		include 'ObjectIntMap.java'
+		include 'ObjectMap.java'
+		include 'ObjectSet.java'
+		include 'OrderedMap.java'
+		include 'OrderedSet.java'
+		include 'Pool.java'
+		include 'PooledLinkedList.java'
+		include 'Pools.java'
+		include 'Predicate.java'
+		include 'Queue.java'
+		include 'QuickSelect.java'
+		include 'ReflectionPool.java'
+		include 'Select.java'
+		include 'ShortArray.java'
+		include 'SnapshotArray.java'
+		include 'Sort.java'
+		include 'SortedIntList.java'
+		include 'TimSort.java'
+		
+		filter { String line ->
+        	line.contains('com.badlogic.gdx.math') ? line.replace('com.badlogic.gdx.math', 'com.badlogic.gdx.utils.compat') : (
+        		line.contains('com.badlogic.gdx.utils.reflect') ? line.replace('com.badlogic.gdx.utils.reflect', 'com.badlogic.gdx.utils.compat') : line
+        	)
+    	}
+	}
+	into 'src/main/java/com/badlogic/gdx/utils'
+}
+
+compileJava.dependsOn copyCollectionClasses
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.14.1'
+}

@@ -1,5 +1,8 @@
 .gradle
 build/
+bin/
+libgdx/
+src/
 
 # Ignore Gradle GUI config
 gradle-app.setting
