@@ -28,6 +28,8 @@ apply plugin: "signing"
 apply plugin: "maven"
 	
 group = 'org.mini2Dx'
+version = "$libgdxVersion"
+description = "LibGDX collection classes extracted into a standalone library"
 	
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -153,6 +155,75 @@ task copyCollectionClasses(type: Copy, dependsOn: copyRequiredReflectClasses) {
 }
 
 compileJava.dependsOn copyCollectionClasses
+
+if (JavaVersion.current().isJava8Compatible()) {
+	allprojects {
+		tasks.withType(Javadoc) {
+			options.addStringOption('Xdoclint:none', '-quiet')
+		}
+	}
+}
+
+task javadocJar(type: Jar) {
+	classifier = 'javadoc'
+	from javadoc
+}
+
+task sourcesJar(type: Jar) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+
+artifacts {
+	archives javadocJar, sourcesJar
+}
+
+if(project.hasProperty('ossrhUser')) {
+	signing {
+		sign configurations.archives
+	}
+	
+	uploadArchives {
+		repositories {
+			mavenDeployer {
+				// POM signature
+				beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+				// Target repository
+				repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+					authentication(userName: ossrhUser, password: ossrhPassword)
+				}
+				pom.project {
+					name project.name
+					description project.description
+					packaging 'jar'
+					url 'https://github.com/mini2Dx/gdx-collections'
+
+					scm {
+						connection 'scm:git:https://github.com/mini2Dx/gdx-collections.git'
+						developerConnection 'scm:git:git@github.com:mini2Dx/gdx-collections.git'
+						url 'https://github.com/mini2Dx/gdx-collections.git'
+					}
+
+					licenses {
+						license {
+							name 'Apache License, Version 2.0'
+							url 'https://opensource.org/licenses/Apache-2.0'
+							distribution 'repo'
+						}
+					}
+
+					developers {
+						developer {
+							id = 'tomcashman'
+							name = 'Thomas Cashman'
+							email = 'thomascashman404@gmail.com'
+						}
+					}
+				}
+			}
+		}
+	}
+}
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.14.1'
