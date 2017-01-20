@@ -81,24 +81,24 @@ task copyRequiredMathClasses(type: Copy, dependsOn: copyLicenseFiles) {
 		include 'MathUtils.java'
 		include 'RandomXS128.java'
 		filter { String line ->
-        	line.contains('com.badlogic.gdx.math') ? line.replace('com.badlogic.gdx.math', 'com.badlogic.gdx.utils.compat') : (
-        		line.contains('com.badlogic.gdx.utils.reflect') ? line.replace('com.badlogic.gdx.utils.reflect', 'com.badlogic.gdx.utils.compat') : line
+        	line.contains('com.badlogic.gdx.math') ? line.replace('com.badlogic.gdx.math', 'org.mini2Dx.gdx.utils.compat') : (
+        		line.contains('com.badlogic.gdx.utils.reflect') ? line.replace('com.badlogic.gdx.utils.reflect', 'org.mini2Dx.gdx.utils.compat') : line
         	)
     	}
 	}
-	into 'src/main/java/com/badlogic/gdx/utils/compat'
+	into 'src/main/java/org/mini2Dx/gdx/utils/compat'
 }
 
 task copyRequiredReflectClasses(type: Copy, dependsOn: copyRequiredMathClasses) {
 	from('libgdx/gdx/src/com/badlogic/gdx/utils/reflect') {
 		include '*.java'
 		filter { String line ->
-        	line.contains('com.badlogic.gdx.math') ? line.replace('com.badlogic.gdx.math', 'com.badlogic.gdx.utils.compat') : (
-        		line.contains('com.badlogic.gdx.utils.reflect') ? line.replace('com.badlogic.gdx.utils.reflect', 'com.badlogic.gdx.utils.compat') : line
+        	line.contains('com.badlogic.gdx.math') ? line.replace('com.badlogic.gdx.math', 'org.mini2Dx.gdx.utils.compat') : (
+        		line.contains('com.badlogic.gdx.utils.reflect') ? line.replace('com.badlogic.gdx.utils.reflect', 'org.mini2Dx.gdx.utils.compat') : line
         	)
     	}
 	}
-	into 'src/main/java/com/badlogic/gdx/utils/compat'
+	into 'src/main/java/org/mini2Dx/gdx/utils/compat'
 }
 
 task copyCollectionClasses(type: Copy, dependsOn: copyRequiredReflectClasses) {
@@ -146,12 +146,14 @@ task copyCollectionClasses(type: Copy, dependsOn: copyRequiredReflectClasses) {
 		include 'TimSort.java'
 		
 		filter { String line ->
-        	line.contains('com.badlogic.gdx.math') ? line.replace('com.badlogic.gdx.math', 'com.badlogic.gdx.utils.compat') : (
-        		line.contains('com.badlogic.gdx.utils.reflect') ? line.replace('com.badlogic.gdx.utils.reflect', 'com.badlogic.gdx.utils.compat') : line
+        	line.contains('com.badlogic.gdx.math') ? line.replace('com.badlogic.gdx.math', 'org.mini2Dx.gdx.utils.compat') : (
+        		line.contains('com.badlogic.gdx.utils.reflect') ? line.replace('com.badlogic.gdx.utils.reflect', 'org.mini2Dx.gdx.utils.compat') : (
+					line.contains('com.badlogic.gdx.utils') ? line.replace('com.badlogic.gdx.utils', 'org.mini2Dx.gdx.utils') : line
+				)
         	)
     	}
 	}
-	into 'src/main/java/com/badlogic/gdx/utils'
+	into 'src/main/java/org/mini2Dx/gdx/utils'
 }
 
 compileJava.dependsOn copyCollectionClasses
