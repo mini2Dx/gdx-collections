@@ -7,6 +7,12 @@ The gradle build will checkout a specific version of libgdx, copy the collection
 
 However MathUtils, RandomXS128 and com.badlogic.gdx.util.reflect classes are required for the collection classes. To allow the collection classes to remain standalone, these classes are copied into _org.mini2Dx.gdx.utils.compat_ and the references are updated in the collections classes.
 
+## Usage
+
+```gradle
+compile "org.mini2Dx:gdx-collections:1.9.5"
+```
+
 ## Included Classes
 
  * Array
