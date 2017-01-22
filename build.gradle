@@ -28,7 +28,7 @@ apply plugin: "signing"
 apply plugin: "maven"
 	
 group = 'org.mini2Dx'
-version = "$libgdxVersion" + ".1"
+version = "$libgdxVersion"
 description = "LibGDX collection classes extracted into a standalone library"
 	
 sourceCompatibility = 1.7
