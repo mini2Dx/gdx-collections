@@ -28,7 +28,7 @@ apply plugin: "signing"
 apply plugin: "maven"
 	
 group = 'org.mini2Dx'
-version = "$libgdxVersion"
+version = "$libgdxVersion" + ".1"
 description = "LibGDX collection classes extracted into a standalone library"
 	
 sourceCompatibility = 1.7
@@ -144,6 +144,7 @@ task copyCollectionClasses(type: Copy, dependsOn: copyRequiredReflectClasses) {
 		include 'Sort.java'
 		include 'SortedIntList.java'
 		include 'TimSort.java'
+		include 'TimeUtils.java'
 		
 		filter { String line ->
         	line.contains('com.badlogic.gdx.math') ? line.replace('com.badlogic.gdx.math', 'org.mini2Dx.gdx.utils.compat') : (

@@ -56,3 +56,4 @@ compile "org.mini2Dx:gdx-collections:1.9.5"
  * Sort
  * SortedIntList
  * TimSort
+ * TimeUtils
