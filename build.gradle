@@ -111,6 +111,7 @@ task copyCollectionClasses(type: Copy, dependsOn: copyRequiredReflectClasses) {
 		include 'ByteArray.java'
 		include 'CharArray.java'
 		include 'ComparableTimSort.java'
+		include 'Collections.java'
 		include 'DelayedRemovalArray.java'
 		include 'Disposable.java'
 		include 'FloatArray.java'
