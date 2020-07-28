@@ -31,8 +31,8 @@ group = 'org.mini2Dx'
 version = "$libgdxVersion"
 description = "LibGDX collection classes extracted into a standalone library"
 	
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 	
 dependencies {}
 
@@ -66,7 +66,7 @@ if(libGdxDirectory.exists()) {
 
 task checkoutLibGdxTag(type: Exec, dependsOn: fetchLatestLibGdxTags) {
 	workingDir './libgdx'
-	commandLine 'git', 'checkout', "$libgdxVersion"
+	commandLine 'git', 'checkout', "gdx-parent-$libgdxVersion"
 }
 
 task copyLicenseFiles(type: Copy, dependsOn: checkoutLibGdxTag) {
@@ -125,6 +125,7 @@ task copyCollectionClasses(type: Copy, dependsOn: copyRequiredReflectClasses) {
 		include 'IntSet.java'
 		include 'LongArray.java'
 		include 'LongMap.java'
+                include 'Null.java'
 		include 'NumberUtils.java'
 		include 'ObjectFloatMap.java'
 		include 'ObjectIntMap.java'
