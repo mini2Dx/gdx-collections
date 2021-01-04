@@ -15,7 +15,7 @@ Usage
 ----------------------
 
 ```gradle
-compile "org.mini2Dx:gdx-collections:1.9.11"
+compile "org.mini2Dx:gdx-collections:1.9.12"
 ```
 
 Included Classes
