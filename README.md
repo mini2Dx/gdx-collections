@@ -15,7 +15,7 @@ Usage
 ----------------------
 
 ```gradle
-compile "org.mini2Dx:gdx-collections:1.9.12"
+compile "org.mini2Dx:gdx-collections:1.9.13"
 ```
 
 Included Classes
@@ -24,6 +24,7 @@ Included Classes
  * [Array](https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/utils/Array.html)
  * [ArrayMap](https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/utils/ArrayMap.html)
  * [AtomicQueue](https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/utils/AtomicQueue.html)
+ * [BinaryHeap](https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/utils/BinaryHeap.html)
  * [Bits](https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/utils/Bits.html)
  * [BooleanArray](https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/utils/BooleanArray.html)
  * [ByteArray](https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/utils/ByteArray.html)
@@ -44,6 +45,7 @@ Included Classes
  * [NumberUtils](https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/utils/NumberUtils.html)
  * [ObjectFloatMap](https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/utils/ObjectFloatMap.html)
  * [ObjectIntMap](https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/utils/ObjectIntMap.html)
+ * [ObjectLongMap](https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/utils/ObjectLongMap.html)
  * [ObjectMap](https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/utils/ObjectMap.html)
  * [ObjectSet](https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/utils/ObjectSet.html)
  * [OrderedMap](https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/utils/OrderedMap.html)
